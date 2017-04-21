@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170410085333) do
+ActiveRecord::Schema.define(version: 20170421111733) do
 
   create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.text     "description", limit: 65535
     t.text     "source",      limit: 65535
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "title"
+    t.integer  "price"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|

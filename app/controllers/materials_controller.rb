@@ -1,5 +1,6 @@
 class MaterialsController < ApplicationController
   def new
+  	@material = Material.new
   end
 
   def index
