@@ -1,2 +1,20 @@
-<h1>Materials#index</h1>
-<p>Find me in app/views/materials/index.html.erb</p>
+<h2>All Materials</h2>
+<p>Buy and download materials!</p>  
+<table class="table table-striped">
+	<thead>
+		<tr>
+		<th class="text-center">Title</th>
+		<th class="text-center">Price</th>
+		<th class="text-center">Link</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @materials.each do |m| %>
+			<tr>
+				<td><%= m.title %></td>
+				<td><%= m.price %></td>
+				<td><%= link_to "Show", material_path(m.id) %></td>
+			</tr>
+		<% end %> 
+	</tbody>
+</table>

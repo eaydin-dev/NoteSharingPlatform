@@ -1,2 +1,6 @@
-<h1>Materials#show</h1>
-<p>Find me in app/views/materials/show.html.erb</p>
+
+<%= @material.title %>
+<br>
+<%= link_to "Download", @material.data.url %>
+<br>
+<%= @material.description %>
