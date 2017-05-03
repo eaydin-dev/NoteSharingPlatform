@@ -5,6 +5,11 @@ class MaterialsController < ApplicationController
 
   def index
   	@materials = Material.all
+    if params[:search]
+      @materials = Material.search(params[:search])
+    else
+      @materials = Material.all
+    end
   end
 
   def show

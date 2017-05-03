@@ -1,20 +1,49 @@
-<h2>All Materials</h2>
-<p>Buy and download materials!</p>  
-<table class="table table-striped">
-	<thead>
-		<tr>
-		<th class="text-center">Title</th>
-		<th class="text-center">Price</th>
-		<th class="text-center">Link</th>
-		</tr>
-	</thead>
-	<tbody>
-		<% @materials.each do |m| %>
-			<tr>
-				<td><%= m.title %></td>
-				<td><%= m.price %></td>
-				<td><%= link_to "Show", material_path(m.id) %></td>
-			</tr>
-		<% end %> 
-	</tbody>
-</table>
+<div class="container">
+
+	<div class="page-header">
+		<button data-toggle="collapse" class="btn btn-primary" data-target="#search-area">
+			<h4>Material Search</h4>
+		</button>
+	</div>
+
+	<div id="search-area" class="collapse">
+		<%= form_tag(materials_path, :method => "get", id:"search-form") do %>
+		<%= text_field_tag :search, params[:search], placeholder: "Search Materials..." %>
+		<%= submit_tag "Search" %>
+		<% end %>
+	</div>
+
+	<% if @materials.present? %>
+		<%= render @materials %>
+	<% else %>
+		<br>
+		<div class="col-xs-offset-4 col-xs-4 alert alert-danger">
+			No term for "<strong><%= params[:search] %></strong>"
+		</div>
+	<% end %>
+
+	<% if @materials.present? %>
+
+		<div class="page-header"><h3>Materials List</h3></div>  
+		<table class="table table-striped">
+			<thead>
+				<tr>
+				<th class="text-center">Title</th>
+				<th class="text-center">Price</th>
+				<th class="text-center">Link</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @materials.each do |m| %>
+					<tr>
+						<td><%= m.title %></td>
+						<td><%= m.price %></td>
+						<td><%= link_to "Show", material_path(m.id) %></td>
+					</tr>
+				<% end %> 
+			</tbody>
+		</table>
+
+	<% end %>
+
+</div>
