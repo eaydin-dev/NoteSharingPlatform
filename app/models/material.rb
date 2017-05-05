@@ -4,8 +4,8 @@ class Material < ApplicationRecord
 	validates_attachment :data, content_type: { content_type: "application/pdf" }
 
 	def self.search(search)
-		where("title LIKE ?", "%#{search}%")
-		where("description LIKE ?", "%#{search}%")
+		where("title LIKE ? OR description LIKE ?", "%#{search}%", "%#{search}%") 
+		#where("description LIKE ?", "%#{search}%")
 	end
 
 end
