@@ -1,19 +1,30 @@
 class MaterialsController < ApplicationController
   def new
   	@material = Material.new
+    
   end
 
   def index
   	@materials = Material.all
+
     if params[:search]
-      @materials = Material.search(params[:search])
+      if user_signed_in?
+        @materials = Material.search(params[:search])
+      else
+        redirect_to new_user_session_path
+      end
     else
       @materials = Material.all
     end
   end
 
   def show
-  	@material = Material.find(params[:id])
+    if user_signed_in?
+      @material = Material.find(params[:id])
+
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   def create
