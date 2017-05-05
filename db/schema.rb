@@ -54,4 +54,7 @@ ActiveRecord::Schema.define(version: 20170505143107) do
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
+
+  add_foreign_key "user_materials", "materials", column: "materials_id"
+  add_foreign_key "user_materials", "users", column: "users_id"
 end
