@@ -1,28 +1,21 @@
 <div class="container">
 
-	<div class="page-header">
-		<button data-toggle="collapse" class="btn btn-primary" data-target="#search-area">
-			<h4>Material Search</h4>
-		</button>
-	</div>
-
-	<div id="search-area" class="collapse">
-		<%= form_tag(materials_path, :method => "get", id:"search-form") do %>
-		<%= text_field_tag :search, params[:search], placeholder: "Search Materials..." %>
-		<%= submit_tag "Search" %>
-		<% end %>
-	</div>
-
 	<% if @materials.present? %>
-		<%= render @materials %>
-	<% else %>
-		<br>
-		<div class="col-xs-offset-4 col-xs-4 alert alert-danger">
-			No term for "<strong><%= params[:search] %></strong>"
+
+		<div class="page-header">
+			<button data-toggle="collapse" class="btn btn-primary" data-target="#search-area">
+				<h4>Material Search</h4>
+			</button>
 		</div>
-	<% end %>
 
-	<% if @materials.present? %>
+		<div id="search-area" class="collapse">
+			<%= form_tag(materials_path, :method => "get", id:"search-form") do %>
+			<%= text_field_tag :search, params[:search], placeholder: "Search Materials..." %>
+			<%= submit_tag "Search" %>
+			<% end %>
+		</div>
+
+		<%= render @materials %>
 
 		<div class="page-header"><h3>Materials List</h3></div>  
 		<table class="table table-striped">
@@ -43,6 +36,18 @@
 				<% end %> 
 			</tbody>
 		</table>
+
+	<% else %>
+
+		<% if params.include?(:search) %>
+				<div class="page-header"><h3>No material for "<strong><%= params[:search] %></strong>"</h3></div>
+				<h4>To make new search: <%= link_to "Materials", materials_path %></h4>
+		<% end %>
+
+		<% unless params.include?(:search) %>
+			<div class="page-header"><h3>There is no material on the system!</h3></div>
+			<h4>To add material: <%= link_to "New Material", new_material_path %></h4>
+		<% end %>
 
 	<% end %>
 

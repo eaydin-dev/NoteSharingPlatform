@@ -25,15 +25,6 @@ ActiveRecord::Schema.define(version: 20170505143107) do
     t.datetime "data_updated_at"
   end
 
-  create_table "user_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "users_id"
-    t.integer  "materials_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.index ["materials_id"], name: "index_user_materials_on_materials_id", using: :btree
-    t.index ["users_id"], name: "index_user_materials_on_users_id", using: :btree
-  end
-
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -54,7 +45,5 @@ ActiveRecord::Schema.define(version: 20170505143107) do
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_foreign_key "user_materials", "materials", column: "materials_id"
-  add_foreign_key "user_materials", "users", column: "users_id"
+  
 end

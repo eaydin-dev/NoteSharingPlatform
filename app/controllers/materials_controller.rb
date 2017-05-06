@@ -1,7 +1,10 @@
 class MaterialsController < ApplicationController
   def new
-  	@material = Material.new
-    
+    if user_signed_in?
+  	 @material = Material.new
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   def index
@@ -21,7 +24,6 @@ class MaterialsController < ApplicationController
   def show
     if user_signed_in?
       @material = Material.find(params[:id])
-
     else
       redirect_to new_user_session_path
     end
