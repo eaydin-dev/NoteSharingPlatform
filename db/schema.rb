@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170506125852) do
+ActiveRecord::Schema.define(version: 20170506133749) do
+
+  create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "user_id"
+    t.integer  "material_id"
+    t.index ["material_id"], name: "index_boughts_on_material_id", using: :btree
+    t.index ["user_id"], name: "index_boughts_on_user_id", using: :btree
+  end
 
   create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "description",       limit: 65535
@@ -44,9 +53,12 @@ ActiveRecord::Schema.define(version: 20170506125852) do
     t.string   "surname"
     t.string   "school"
     t.string   "department"
+    t.integer  "budget"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "boughts", "materials"
+  add_foreign_key "boughts", "users"
   add_foreign_key "materials", "users"
 end

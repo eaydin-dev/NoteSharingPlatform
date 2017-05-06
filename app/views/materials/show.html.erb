@@ -12,11 +12,11 @@
 				<div class="page-header">
 					<h3>Owner Info</h3>
 				</div>
-				<strong>Name:</strong> <%= current_user.name %> <%= current_user.surname %>
+				<strong>Name:</strong> <%= @material_user.name %> <%= @material_user.surname %>
 				<br>
-				<strong>School:</strong> <%= current_user.school %>
+				<strong>School:</strong> <%= @material_user.school %>
 				<br>  
-				<strong>Department:</strong> <%= current_user.department %>
+				<strong>Department:</strong> <%= @material_user.department %>
 				<br>
 				<strong>Price:</strong> <%= @material.price %>
 			</div>
@@ -35,9 +35,15 @@
 		</div>
 
 		<div class="panel-footer">
-			<button type="button" class="btn btn-link btn-lg">
-				<%= link_to "Download", @material.data.url %>
-			</button>
+			<% if @status == 0 %>
+				<%= form_tag(material_path, :method => "post") do %>
+					<%= submit_tag "Buy", class:'btn btn-info' %>
+				<% end %>
+			<% else %>
+			 	<%= form_tag(material_path, :method => "post") do %>
+					<%= link_to  "Download", @material.data.url %>
+				<% end %>
+			<% end %>
 			
 		</div>
 

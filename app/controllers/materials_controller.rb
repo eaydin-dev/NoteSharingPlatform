@@ -23,7 +23,35 @@ class MaterialsController < ApplicationController
 
   def show
     if user_signed_in?
+
       @material = Material.find(params[:id])
+      @material_user = User.find(@material.user_id)
+
+      if @material.user_id == current_user.id
+        @status = 1
+      else
+        unless Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
+          if request.post?
+            if @material.price < current_user.budget
+              bought = Bought.new
+              bought.user_id = current_user.id
+              bought.material_id = @material.id
+              current_user.budget = current_user.budget - @material.price
+
+              bought.save
+              current_user.save
+              @status = 1
+            else
+              @status = 0
+            end
+          else
+            @status = 0
+          end
+        else
+          @status = 1
+        end
+      end
+        
     else
       redirect_to new_user_session_path
     end
