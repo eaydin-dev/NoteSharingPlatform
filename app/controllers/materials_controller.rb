@@ -31,6 +31,7 @@ class MaterialsController < ApplicationController
 
   def create
   	@material = Material.new(permit_material)
+    @material.user_id = current_user.id
   	if @material.save
   		flash[:success] = "Success!"
   		redirect_to material_path(@material)
@@ -42,6 +43,6 @@ class MaterialsController < ApplicationController
 
   private
   	def permit_material
-  		params.require(:material).permit(:data, :title, :price, :source, :description)
+  		params.require(:material).permit(:data, :title, :price, :description, :user_id)
   	end
 end

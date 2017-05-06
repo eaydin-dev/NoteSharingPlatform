@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505143107) do
+ActiveRecord::Schema.define(version: 20170506125852) do
 
   create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "description",       limit: 65535
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20170505143107) do
     t.string   "data_content_type"
     t.integer  "data_file_size"
     t.datetime "data_updated_at"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_materials_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -45,5 +47,6 @@ ActiveRecord::Schema.define(version: 20170505143107) do
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-  
+
+  add_foreign_key "materials", "users"
 end
