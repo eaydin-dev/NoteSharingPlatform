@@ -41,8 +41,12 @@ class MaterialsController < ApplicationController
               bought.save
               current_user.save
               @status = 1
+              flash[:success] = "Material has been bough!"
+              redirect_to material_path(@material)
             else
               @status = 0
+              flash[:error] = "Not enough budget :("
+              redirect_to edit_user_registration_path
             end
           else
             @status = 0
