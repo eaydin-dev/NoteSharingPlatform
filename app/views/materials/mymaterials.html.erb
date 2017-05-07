@@ -1,0 +1,51 @@
+<div class="container" style="margin-top:50px;">
+
+	<% if @my_materials.present? %>
+		<div class="panel panel-primary">
+
+			<div class="panel-heading">
+				<h3>My Materials</h3>
+			</div>
+
+			<div class="panel-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+						<th class="text-center">Title</th>
+						<th class="text-center">Price</th>
+						<th class="text-center">Download</th>
+						<th class="text-center">Edit</th>
+						<th class="text-center">Link</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @my_materials.each do |m| %>
+							<tr>
+								<td><%= m.title %></td>
+								<td><%= m.price %></td>
+								<td>
+									<%= link_to  '<button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-download"></span></button>'.html_safe, m.data.url %>	
+								</td>
+								<td>
+									<%= link_to  '<button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span></button>'.html_safe, edit_material_path(m.id) %>
+								</td>
+								<td>
+									<%= link_to  '<button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-paperclip"></span></button>'.html_safe, material_path(m.id) %>
+								</td>
+							</tr>
+						<% end %> 
+					</tbody>
+				</table>
+			</div>
+
+			<div class="panel-footer">
+				To delete material, mail to <strong>info@notesharingplatform.com</strong>
+			</div>
+
+		</div>
+	<% else %>
+		<div class="page-header"><h3>You have no material added by you!</h3></div>
+		<h4>To add material: <%= link_to "New Material", new_material_path %></h4>
+	<% end %>
+
+</div>

@@ -7,6 +7,23 @@ class MaterialsController < ApplicationController
     end
   end
 
+  def mymaterials
+    if user_signed_in?
+      @my_materials = Material.where(:user_id => current_user.id)
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
+  def boughtmaterials
+    if user_signed_in?
+      @bought_ids = Bought.select("material_id").where(:user_id => current_user.id)
+      @bought_materials = Material.where(:id => @bought_ids)
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
   def index
   	@materials = Material.all
 
@@ -18,6 +35,28 @@ class MaterialsController < ApplicationController
       end
     else
       @materials = Material.all
+    end
+  end
+
+  def edit
+    if user_signed_in?
+      @material = Material.find(params[:id])
+
+      if request.put?
+        @material.title = params[:material][:title]
+        @material.description = params[:material][:description]
+        @material.price = params[:material][:price]
+        unless params[:material][:data].blank?
+          @material.data = params[:material][:data]
+        end
+
+        if @material.save
+          flash[:success] = "Material has been updated!"
+          redirect_to edit_material_path(@material.id)
+        end
+      end
+    else
+      redirect_to new_user_session_path
     end
   end
 
@@ -37,11 +76,13 @@ class MaterialsController < ApplicationController
               bought.user_id = current_user.id
               bought.material_id = @material.id
               current_user.budget = current_user.budget - @material.price
+              @material_user.budget = @material_user.budget + @material.price
 
+              @material_user.save
               bought.save
               current_user.save
               @status = 1
-              flash[:success] = "Material has been bough!"
+              flash[:success] = "Material has been bought!"
               redirect_to material_path(@material)
             else
               @status = 0

@@ -1,6 +1,6 @@
-<div class="page-header"><h2> New Material </h2></div>
+<div class="page-header"><h2>Edit <%= @material.title %></h2></div>
 
-<%= form_for @material, html: { multipart:true } do |f| %>
+<%= form_for(@material, url: edit_material_path(@material), html: { method: :put }) do |f| %>
 
   <div class="form-group">
     <%= f.label :title %><br />
@@ -23,7 +23,8 @@
   </div>
 
   <div class="actions">
-    <%= f.submit :value => "Create", :class => "btn btn-info" %>
+    <%= f.submit :value => "Update", :class => "btn btn-info" %>
   </div>
-
 <% end %>
+
+</div>

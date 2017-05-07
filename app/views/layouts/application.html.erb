@@ -30,6 +30,12 @@
                 <%= link_to '<span class="glyphicon glyphicon-edit"></span>&nbsp; Profile'.html_safe, edit_user_registration_path %>
               </li>
               <li>
+                 <%= link_to '<span class="glyphicon glyphicon-list"></span>&nbsp; My Materials'.html_safe, mymaterials_path %>
+              </li>
+              <li>
+                <%= link_to '<span class="glyphicon glyphicon-list-alt"></span>&nbsp; Bought Materials'.html_safe, boughtmaterials_path %>
+              </li>
+              <li>
                 <%= link_to '<span class="glyphicon glyphicon-pencil"></span>&nbsp; New Material'.html_safe, new_material_path %>
               </li>
             <% end %>
@@ -68,20 +74,7 @@
         <div class="row text-center">
          <%= yield %>
         </div>
-    </div>
-
-
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-      <div class="container">
-        <ul class="nav navbar-nav navbar-left">
-          <li class="navbar-text">
-            <span class="glyphicon glyphicon-education"></span>&nbsp; 
-            Made in 2017 with <strong>Rails</strong>, <strong>Bootstrap</strong> and <strong>Google Font</strong>.
-          </li>
-        </ul>
-      </div>
-    </nav>
-   
+    </div>  
 
   </body>
 </html>
