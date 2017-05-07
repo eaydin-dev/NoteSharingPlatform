@@ -106,7 +106,7 @@ class MaterialsController < ApplicationController
   	@material = Material.new(permit_material)
     @material.user_id = current_user.id
   	if @material.save
-  		flash[:success] = "Success!"
+  		flash[:success] = "Material is created!"
   		redirect_to material_path(@material)
   	else
   		flash[:error] = @material.errors.full_messages

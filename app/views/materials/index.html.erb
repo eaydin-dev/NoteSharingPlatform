@@ -2,40 +2,57 @@
 
 	<% if @materials.present? %>
 
-		<div class="page-header">
-			<button data-toggle="collapse" class="btn btn-primary" data-target="#search-area">
-				<h4>Material Search</h4>
-			</button>
-		</div>
+		<div class="row">
+			<div class="page-header">
+				<button data-toggle="collapse" class="btn btn-primary" data-target="#search-area">
+					<h4>Material Search</h4>
+				</button>
+			</div>
 
-		<div id="search-area" class="collapse">
-			<%= form_tag(materials_path, :method => "get", id:"search-form") do %>
-			<%= text_field_tag :search, params[:search], placeholder: "Search Materials..." %>
-			<%= submit_tag "Search" %>
-			<% end %>
+			<div id="search-area" class="collapse">
+				<%= form_tag(materials_path, :method => "get", id:"search-form") do %>
+				<%= text_field_tag :search, params[:search], placeholder: "Search Materials..." %>
+				<%= submit_tag 'Search', :class => "btn btn-info btn-sm" %>
+				<% end %>
+			</div>
 		</div>
 
 		<%= render @materials %>
 
-		<div class="page-header"><h3>Materials List</h3></div>  
-		<table class="table table-striped">
-			<thead>
-				<tr>
-				<th class="text-center">Title</th>
-				<th class="text-center">Price</th>
-				<th class="text-center">Link</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @materials.each do |m| %>
-					<tr>
-						<td><%= m.title %></td>
-						<td><%= m.price %></td>
-						<td><%= link_to "Show", material_path(m.id) %></td>
-					</tr>
-				<% end %> 
-			</tbody>
-		</table>
+		<div class="panel panel-success" style="margin-top:10px;">
+
+			<div class="panel-heading">
+				<h3>Material List</h3>
+			</div>
+
+			<div class="panel-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+						<th class="text-center">Title</th>
+						<th class="text-center">Price</th>
+						<th class="text-center">Link</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @materials.each do |m| %>
+							<tr>
+								<td><%= m.title %></td>
+								<td><%= m.price %></td>
+								<td>
+									<%= link_to  '<button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-paperclip"></span></button>'.html_safe, material_path(m.id) %>
+								</td>
+							</tr>
+						<% end %> 
+					</tbody>
+				</table>
+			</div>
+
+			<div class="panel-footer">
+				
+			</div>
+
+		</div>
 
 	<% else %>
 
