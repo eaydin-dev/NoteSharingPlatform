@@ -41,6 +41,9 @@ class MaterialsController < ApplicationController
   def edit
     if user_signed_in?
       @material = Material.find(params[:id])
+      if @material.user_id != current_user.id
+        redirect_to materials_path
+      end
 
       if request.put?
         @material.title = params[:material][:title]
