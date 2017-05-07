@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170506133749) do
 
-  create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20170506133749) do
     t.index ["user_id"], name: "index_boughts_on_user_id", using: :btree
   end
 
-  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "description",       limit: 65535
     t.text     "source",            limit: 65535
     t.datetime "created_at",                      null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20170506133749) do
     t.index ["user_id"], name: "index_materials_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
