@@ -68,6 +68,13 @@ class MaterialsController < ApplicationController
 
       @material = Material.find(params[:id])
       @material_user = User.find(@material.user_id)
+      @comment = Comment.new
+      @comment_texts = Comment.select(:text, :created_at).where(:material_id => @material.id)
+      @comment_users_ids = Comment.select(:user_id).where(:material_id => @material.id)
+      @comment_users = Array.new
+      @comment_users_ids.each do |comment_user|
+        @comment_users.push(User.find(comment_user.user_id))
+      end 
 
       if @material.user_id == current_user.id
         @status = 1
@@ -100,6 +107,7 @@ class MaterialsController < ApplicationController
         else
           @status = 1
           @user_reputation_status = 2
+
           unless UserReputation.where(:user_give => current_user.id, :user_recieve => @material_user.id).exists?
             if request.post? and params.include?(:user_reputation)
               user_reputation = UserReputation.new
@@ -133,6 +141,20 @@ class MaterialsController < ApplicationController
             end
           else
             @material_reputation_status = 1
+          end
+
+          if request.post? and params.include?(:comment_material)
+            unless params[:comment_text].blank?
+              @comment.text = params[:comment_text]
+              @comment.user_id = current_user.id
+              @comment.material_id = @material.id
+
+              @comment.save
+              flash[:success] = "Your comment has been added!"
+            else
+              flash[:error] = "Comment area can't be empty!"
+            end
+            redirect_to material_path(@material)
           end
         end
       end

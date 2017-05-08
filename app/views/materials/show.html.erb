@@ -33,6 +33,8 @@
 				<div class="page-header">
 					<h3>Material Info</h3>
 				</div>
+				<strong>Date: </strong><%= @material.created_at.strftime("%d/%m/%y") %>
+				<br>
 				<strong>Description: </strong><%= @material.description %>
 				<br>
 				<strong>Reputation: </strong><%= @material.reputation %>
@@ -61,6 +63,53 @@
 					<%= link_to  "Download", @material.data.url %>
 				<% end %>
 			<% end %>
+			
+		</div>
+	</div>
+
+	<div class="panel panel-info">
+
+		<div class="panel-heading"><h4>Comment Area</h4></div>
+
+		<div class="panel-body">
+			<% unless @status == 0 %>
+				<%= form_tag(material_path, :method => "post") do %>
+				 	<div class="form-group">
+						<strong><h4>Write a comment</h4></strong>
+						<br>
+						<textarea id="comment_id" style="height: 150px; width:450px;" name="comment_text"></textarea>
+	  				</div>
+					<%= submit_tag "Comment", name: "comment_material", class:'btn btn-warning' %>
+				<% end %>
+			<% end %>
+
+			<% @comment_users.zip(@comment_texts) do |u, t| %>
+				<div class="row">
+					<div class="col-xs-3 text-left">
+						<div class="page-header">
+							<h3>User</h3>
+						</div>
+						<strong>Name:</strong> <%= u.name %> <%= u.surname %>
+						<br>
+						<strong>School:</strong> <%= u.school %>
+						<br>  
+						<strong>Department:</strong> <%= u.department %>
+						<br>
+						<strong>Reputation:</strong> <%= u.reputation %>
+					</div>
+
+					<div class="col-xs-9 text-left">
+						<div class="page-header">
+							<h3>Comment</h3>
+						</div>
+						<strong>Date: </strong><%= t.created_at.strftime("%d/%m/%y") %><br>
+						<strong>Comment: </strong><%= t.text %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+
+		<div class="panel-footer">
 			
 		</div>
 
