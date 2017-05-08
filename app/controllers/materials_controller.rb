@@ -71,6 +71,8 @@ class MaterialsController < ApplicationController
 
       if @material.user_id == current_user.id
         @status = 1
+        @user_reputation_status = 1
+        @material_reputation_status = 1
       else
         unless Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
           if request.post? and params.include?(:buy_material)
@@ -96,9 +98,10 @@ class MaterialsController < ApplicationController
             @status = 0
           end
         else
-          @status = 2
+          @status = 1
+          @user_reputation_status = 2
           unless UserReputation.where(:user_give => current_user.id, :user_recieve => @material_user.id).exists?
-            if request.post? and params.include?(:reputation)
+            if request.post? and params.include?(:user_reputation)
               user_reputation = UserReputation.new
               user_reputation.user_give = current_user.id
               user_reputation.user_recieve = @material_user.id
@@ -111,7 +114,25 @@ class MaterialsController < ApplicationController
               redirect_to material_path(@material)
             end
           else
-            @status = 1
+            @user_reputation_status = 1
+          end
+
+          @material_reputation_status = 2
+          unless MaterialReputation.where(:user_id => current_user.id, :material_id => @material.id).exists?
+            if request.post? and params.include?(:material_reputation)
+              material_reputation = MaterialReputation.new
+              material_reputation.user_id = current_user.id
+              material_reputation.material_id = @material.id
+
+              @material.reputation = @material.reputation + 10
+
+              @material.save
+              material_reputation.save
+              flash[:success] = "Reputation has been given to " + @material.title + "!"
+              redirect_to material_path(@material)
+            end
+          else
+            @material_reputation_status = 1
           end
         end
       end

@@ -21,20 +21,28 @@
 				<strong>Price:</strong> <%= @material.price %>
 				<br>
 				<strong>Reputation:</strong> <%= @material_user.reputation %>
-				<br>
-
-				<% if @status == 2 %>
+				<br><br>
+				<% if @user_reputation_status == 2 %>
 					<%= form_tag(material_path, :method => "post") do %>
-						<%= submit_tag "Give Reputation", name: "reputation", class:'btn btn-warning' %>
+						<%= submit_tag "Give Reputation", name: "user_reputation", class:'btn btn-warning' %>
 					<% end %>
 				<% end %>
 			</div>
 
 			<div class="col-xs-9 text-left">
 				<div class="page-header">
-					<h3>Description</h3>
+					<h3>Material Info</h3>
 				</div>
-				<%= @material.description %>
+				<strong>Description: </strong><%= @material.description %>
+				<br>
+				<strong>Reputation: </strong><%= @material.reputation %>
+				<br><br>
+
+				<% if @material_reputation_status == 2 %>
+					<%= form_tag(material_path, :method => "post") do %>
+						<%= submit_tag "Give Reputation", name: "material_reputation", class:'btn btn-warning' %>
+					<% end %>
+				<% end %>
 			</div>
 
 			<div class="row">
