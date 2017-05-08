@@ -73,7 +73,7 @@ class MaterialsController < ApplicationController
         @status = 1
       else
         unless Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
-          if request.post?
+          if request.post? and params.include?(:buy_material)
             if @material.price < current_user.budget
               bought = Bought.new
               bought.user_id = current_user.id
@@ -96,7 +96,23 @@ class MaterialsController < ApplicationController
             @status = 0
           end
         else
-          @status = 1
+          @status = 2
+          unless UserReputation.where(:user_give => current_user.id, :user_recieve => @material_user.id).exists?
+            if request.post? and params.include?(:reputation)
+              user_reputation = UserReputation.new
+              user_reputation.user_give = current_user.id
+              user_reputation.user_recieve = @material_user.id
+
+              @material_user.reputation = @material_user.reputation + 10
+
+              @material_user.save
+              user_reputation.save
+              flash[:success] = "Reputation has been given to " + @material_user.name + "!"
+              redirect_to material_path(@material)
+            end
+          else
+            @status = 1
+          end
         end
       end
         
