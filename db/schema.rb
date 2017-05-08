@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170506133749) do
+ActiveRecord::Schema.define(version: 20170508063627) do
 
   create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at",  null: false
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 20170506133749) do
     t.datetime "data_updated_at"
     t.integer  "user_id"
     t.index ["user_id"], name: "index_materials_on_user_id", using: :btree
+  end
+
+  create_table "user_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_give"
+    t.integer  "user_recieve"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_give"], name: "fk_rails_1365d6e9f8", using: :btree
+    t.index ["user_recieve"], name: "fk_rails_6cfe044377", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -61,4 +70,6 @@ ActiveRecord::Schema.define(version: 20170506133749) do
   add_foreign_key "boughts", "materials"
   add_foreign_key "boughts", "users"
   add_foreign_key "materials", "users"
+  add_foreign_key "user_reputations", "users", column: "user_give"
+  add_foreign_key "user_reputations", "users", column: "user_recieve"
 end
