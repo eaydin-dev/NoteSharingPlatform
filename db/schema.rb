@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170509142958) do
 
-  create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_id"], name: "index_boughts_on_user_id", using: :btree
   end
 
-  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "user_id"
     t.integer  "material_id"
     t.string   "text"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_id"], name: "fk_rails_03de2dc08c", using: :btree
   end
 
-  create_table "material_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "material_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "user_id"
     t.integer  "material_id"
     t.datetime "created_at",  null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_id"], name: "fk_rails_cadfeb5afa", using: :btree
   end
 
-  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.text     "description",       limit: 65535
     t.text     "source",            limit: 65535
     t.datetime "created_at",                                  null: false
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_id"], name: "index_materials_on_user_id", using: :btree
   end
 
-  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "user_sent"
     t.integer  "user_receive"
     t.string   "text"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_sent"], name: "fk_rails_9438a1f0a6", using: :btree
   end
 
-  create_table "user_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "user_give"
     t.integer  "user_recieve"
     t.datetime "created_at",   null: false
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.index ["user_recieve"], name: "fk_rails_6cfe044377", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20170509142958) do
     t.string   "school"
     t.string   "department"
     t.integer  "budget"
-    t.integer  "reputation"
+    t.integer  "reputation",             default: 0
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -108,4 +108,6 @@ ActiveRecord::Schema.define(version: 20170509142958) do
   add_foreign_key "materials", "users"
   add_foreign_key "messages", "users", column: "user_receive"
   add_foreign_key "messages", "users", column: "user_sent"
+  add_foreign_key "user_reputations", "users", column: "user_give"
+  add_foreign_key "user_reputations", "users", column: "user_recieve"
 end

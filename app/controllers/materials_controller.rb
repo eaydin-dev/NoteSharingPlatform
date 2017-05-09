@@ -11,13 +11,14 @@ class MaterialsController < ApplicationController
     if user_signed_in?
       Message.where(notified: 0, user_receive: current_user.id).update_all(notified: 1)
 
-      @message_texts = Message.where(:user_receive => current_user.id).order({ created_at: :desc })
+      @message_texts = Message.where(:user_receive => current_user.id).order({ created_at: :desc }).paginate(:page => params[:page], :per_page => 5)
 
-      @message_user_ids = Message.where(:user_receive => current_user.id).order({ created_at: :desc })
+      @message_user_ids = Message.where(:user_receive => current_user.id).order({ created_at: :desc }).paginate(:page => params[:page], :per_page => 5)
       @message_users = Array.new
       @message_user_ids.each do |message_user|
         @message_users.push(User.find(message_user.user_sent))
       end 
+      #@message_users.paginate(:page => params[:page], :per_page => 5)
 
       if request.post? and params.include?(:message_user)
         unless params[:message_text].blank?
@@ -41,7 +42,7 @@ class MaterialsController < ApplicationController
 
   def mymaterials
     if user_signed_in?
-      @my_materials = Material.where(:user_id => current_user.id)
+      @my_materials = Material.where(:user_id => current_user.id).paginate(:page => params[:page], :per_page => 5)
     else
       redirect_to new_user_session_path
     end
@@ -50,23 +51,23 @@ class MaterialsController < ApplicationController
   def boughtmaterials
     if user_signed_in?
       @bought_ids = Bought.select("material_id").where(:user_id => current_user.id)
-      @bought_materials = Material.where(:id => @bought_ids)
+      @bought_materials = Material.where(:id => @bought_ids).paginate(:page => params[:page], :per_page => 5)
     else
       redirect_to new_user_session_path
     end
   end
 
   def index
-  	@materials = Material.all
+  	@materials = Material.all.paginate(:page => params[:page], :per_page => 5)
 
     if params[:search]
       if user_signed_in?
-        @materials = Material.search(params[:search])
+        @materials = Material.search(params[:search]).paginate(:page => params[:page], :per_page => 5)
       else
         redirect_to new_user_session_path
       end
     else
-      @materials = Material.all
+      @materials = Material.all.paginate(:page => params[:page], :per_page => 5)
     end
   end
 
@@ -101,12 +102,13 @@ class MaterialsController < ApplicationController
       @material = Material.find(params[:id])
       @material_user = User.find(@material.user_id)
       @comment = Comment.new
-      @comment_texts = Comment.select(:text, :created_at).where(:material_id => @material.id)
-      @comment_users_ids = Comment.select(:user_id).where(:material_id => @material.id)
+      @comment_texts = Comment.select(:text, :created_at).where(:material_id => @material.id).paginate(:page => params[:page], :per_page => 5)
+      @comment_users_ids = Comment.select(:user_id).where(:material_id => @material.id).paginate(:page => params[:page], :per_page => 5)
       @comment_users = Array.new
       @comment_users_ids.each do |comment_user|
         @comment_users.push(User.find(comment_user.user_id))
       end 
+      #@comment_users.paginate(:page => params[:page], :per_page => 5)
 
       if @material.user_id == current_user.id or Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
         if request.post? and params.include?(:comment_material)
