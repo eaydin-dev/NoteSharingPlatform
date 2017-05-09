@@ -39,15 +39,15 @@
 			</div>
 
 			<div class="panel-footer">
-				To delete material, mail to <strong>info@notesharingplatform.com</strong>
-				<br>
 				<%= will_paginate @my_materials, renderer: BootstrapPagination::Rails %>
+				<br>
+				To delete material, mail to <strong>info@notesharingplatform.com</strong>
 			</div>
 
 		</div>
 	<% else %>
-		<div class="page-header"><h3>You have no material added by you!</h3></div>
 		<h4>To add material: <%= link_to "New Material", new_material_path %></h4>
+		<div class="page-header"><h3>You have no material added by you!</h3></div>
 	<% end %>
 
 </div>
