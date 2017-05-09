@@ -76,12 +76,28 @@ class MaterialsController < ApplicationController
         @comment_users.push(User.find(comment_user.user_id))
       end 
 
+      if @material.user_id == current_user.id or Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
+        if request.post? and params.include?(:comment_material)
+            unless params[:comment_text].blank?
+              @comment.text = params[:comment_text]
+              @comment.user_id = current_user.id
+              @comment.material_id = @material.id
+
+              @comment.save
+              flash[:success] = "Your comment has been added!"
+            else
+              flash[:error] = "Comment area can't be empty!"
+            end
+            redirect_to material_path(@material)
+          end
+        end
+
       if @material.user_id == current_user.id
         @status = 1
         @user_reputation_status = 1
         @material_reputation_status = 1
       else
-        unless Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
+        unless Bought.where(:user_id => current_user.id, :material_id => @material.id).exists? 
           if request.post? and params.include?(:buy_material)
             if @material.price < current_user.budget
               bought = Bought.new
@@ -141,20 +157,6 @@ class MaterialsController < ApplicationController
             end
           else
             @material_reputation_status = 1
-          end
-
-          if request.post? and params.include?(:comment_material)
-            unless params[:comment_text].blank?
-              @comment.text = params[:comment_text]
-              @comment.user_id = current_user.id
-              @comment.material_id = @material.id
-
-              @comment.save
-              flash[:success] = "Your comment has been added!"
-            else
-              flash[:error] = "Comment area can't be empty!"
-            end
-            redirect_to material_path(@material)
           end
         end
       end
