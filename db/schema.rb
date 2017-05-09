@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170508084521) do
+ActiveRecord::Schema.define(version: 20170509142958) do
 
   create_table "boughts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at",  null: false
@@ -56,6 +56,17 @@ ActiveRecord::Schema.define(version: 20170508084521) do
     t.index ["user_id"], name: "index_materials_on_user_id", using: :btree
   end
 
+  create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_sent"
+    t.integer  "user_receive"
+    t.string   "text"
+    t.integer  "notified"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_receive"], name: "fk_rails_acc25190a0", using: :btree
+    t.index ["user_sent"], name: "fk_rails_9438a1f0a6", using: :btree
+  end
+
   create_table "user_reputations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_give"
     t.integer  "user_recieve"
@@ -95,4 +106,6 @@ ActiveRecord::Schema.define(version: 20170508084521) do
   add_foreign_key "material_reputations", "materials"
   add_foreign_key "material_reputations", "users"
   add_foreign_key "materials", "users"
+  add_foreign_key "messages", "users", column: "user_receive"
+  add_foreign_key "messages", "users", column: "user_sent"
 end

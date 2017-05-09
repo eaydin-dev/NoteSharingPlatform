@@ -27,6 +27,43 @@
 						<%= submit_tag "Give Reputation", name: "user_reputation", class:'btn btn-warning' %>
 					<% end %>
 				<% end %>
+				<br><br>
+				<% if @status == 1 and current_user.id != @material_user.id %>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal">
+						Send Message
+					</button>
+
+					<div id="messageModal" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">
+										Send Message to <strong><%= @material_user.name %> <%= @material_user.surname %></strong>
+									</h4>
+								</div>
+
+								<div class="modal-body">
+								<%= form_tag(material_path, :method => "post") do %>
+								 	<div class="form-group">
+										<strong><h4>Write a message</h4></strong>
+										<br>
+										<textarea id="message_id" style="height: 150px; width:450px;" name="message_text"></textarea>
+					  				</div>
+									<%= submit_tag "Message", name: "message_user", class:'btn btn-info' %>
+								<% end %>
+								</div>
+
+								<div class="modal-footer">
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				<% end %>
+
 			</div>
 
 			<div class="col-xs-9 text-left">

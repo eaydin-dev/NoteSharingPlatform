@@ -7,6 +7,38 @@ class MaterialsController < ApplicationController
     end
   end
 
+  def messages
+    if user_signed_in?
+      Message.where(notified: 0, user_receive: current_user.id).update_all(notified: 1)
+
+      @message_texts = Message.where(:user_receive => current_user.id).order({ created_at: :desc })
+
+      @message_user_ids = Message.where(:user_receive => current_user.id).order({ created_at: :desc })
+      @message_users = Array.new
+      @message_user_ids.each do |message_user|
+        @message_users.push(User.find(message_user.user_sent))
+      end 
+
+      if request.post? and params.include?(:message_user)
+        unless params[:message_text].blank?
+          @message = Message.new
+          @message.user_sent = current_user.id
+          @message.user_receive = params[:user_receive_id]
+          @message.text = params[:message_text]
+          @message.notified = 0
+          @message.save
+
+          flash[:success] = "Message has been sent!"
+        else
+          flash[:error] = "Message can't be empty!"
+        end
+        redirect_to messages_path
+      end
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
   def mymaterials
     if user_signed_in?
       @my_materials = Material.where(:user_id => current_user.id)
@@ -78,19 +110,19 @@ class MaterialsController < ApplicationController
 
       if @material.user_id == current_user.id or Bought.where(:user_id => current_user.id, :material_id => @material.id).exists?
         if request.post? and params.include?(:comment_material)
-            unless params[:comment_text].blank?
-              @comment.text = params[:comment_text]
-              @comment.user_id = current_user.id
-              @comment.material_id = @material.id
+          unless params[:comment_text].blank?
+            @comment.text = params[:comment_text]
+            @comment.user_id = current_user.id
+            @comment.material_id = @material.id
 
-              @comment.save
-              flash[:success] = "Your comment has been added!"
-            else
-              flash[:error] = "Comment area can't be empty!"
-            end
-            redirect_to material_path(@material)
+            @comment.save
+            flash[:success] = "Your comment has been added!"
+          else
+            flash[:error] = "Comment area can't be empty!"
           end
+          redirect_to material_path(@material)
         end
+      end
 
       if @material.user_id == current_user.id
         @status = 1
@@ -123,6 +155,22 @@ class MaterialsController < ApplicationController
         else
           @status = 1
           @user_reputation_status = 2
+
+          if request.post? and params.include?(:message_user)
+            unless params[:message_text].blank?
+              @message = Message.new
+              @message.user_sent = current_user.id
+              @message.user_receive = @material_user.id
+              @message.text = params[:message_text]
+              @message.notified = 0
+              @message.save
+
+              flash[:success] = "Message has been sent!"
+            else
+              flash[:error] = "Message can't be empty!"
+            end
+            redirect_to material_path(@material)
+          end
 
           unless UserReputation.where(:user_give => current_user.id, :user_recieve => @material_user.id).exists?
             if request.post? and params.include?(:user_reputation)

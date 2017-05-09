@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_sent: 1
+  user_receive: 1
+  text: MyString
+  notified: 1
+
+two:
+  user_sent: 1
+  user_receive: 1
+  text: MyString
+  notified: 1
