@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "boughtmaterials" => "materials#boughtmaterials"
   get "messages" => "materials#messages"
   post "messages" => "materials#messages"
+  delete "messages/delete/:id" => "materials#deleteMessage", as: "delete_message"
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

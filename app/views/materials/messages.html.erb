@@ -55,7 +55,7 @@
 											</div>
 
 											<div class="modal-footer">
-
+										      
 											</div>
 
 										</div>
@@ -72,7 +72,11 @@
 							</div>
 						</div>
 					</div>
-					<div class="panel-footer"></div>
+					<div class="panel-footer">
+						<div class="form-group">
+					      <%= button_to "Delete", delete_message_path(t.id), { class: 'btn btn-danger', data: { confirm: "Are you sure to delete message?"}, method: :delete} %>
+				      	</div>
+					</div>
 				</div>
 			</div>
 		<% end %>

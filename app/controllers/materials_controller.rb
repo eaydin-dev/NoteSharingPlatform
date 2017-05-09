@@ -7,6 +7,14 @@ class MaterialsController < ApplicationController
     end
   end
 
+  def deleteMessage
+    if request.delete? and not params[:id].blank?
+      Message.find(params[:id]).destroy
+      flash[:success] = "Message has been deleted!"
+      redirect_to messages_path
+    end
+  end
+
   def messages
     if user_signed_in?
       Message.where(notified: 0, user_receive: current_user.id).update_all(notified: 1)
